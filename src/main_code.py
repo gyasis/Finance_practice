@@ -23,7 +23,10 @@ cf.set_config_file(theme='space', offline=False, world_readable=True)
 # %%
 print("List of Cufflinks Themes :",cf.getThemes())
 # %%
-qf = cf.QuantFig(df, title='GPRO', legend='top')
+qf = cf.QuantFig(df, 
+                #  title='GPRO', 
+                #  legend='top'
+                )
 # qf.add_volume()
 # qf.add_sma(periods=3, column='Close', color='red')
 # qf.add_ema(periods=3, color='blue')
@@ -51,11 +54,54 @@ from cufflinks import tools
 import plotly.graph_objects as go
 fig = go.Figure(**tools.merge_figures([
     qf.figure(),
-    df.figure(columns=['VWAP'],kind='scatter')]))
+    df.figure(columns=['VWAP', 'Volume'],kind='bar')])
+                )
 
 
-
+# cf.iplot(fig)
 fig.show()
+
 # %%
-test = df.iplot(kind='line', x=df.index,y=df.VWAP,title='VWAP')
+
+df1 = cf.datagen.lines(4, mode='abc')
+# %%
+df1[['c', 'd']] = df1[['c', 'd']] * 100
+
+fig = go.Figure(**tools.merge_figures([
+    df1.figure(columns=['a', 'b']),
+    df1.figure(columns=['c', 'd'], kind='bar')
+])).set_axis(['c','d'], side='right')
+
+cf.iplot(fig)
+# %%
+fig3 = go.Figure(data=go.Scatter(x=df.index, y=df.VWAP, mode='lines', name='VWAP'))
+fig4 =go.Figure(data=[go.Candlestick(x=df.index, open=df.Open, high=df.High, low=df.Low, close=df.Close)])
+
+# %%
+fig4.update_layout(xaxis_rangeslider_visible=False, template='plotly_dark')
+fig4.update_yaxes(side='right')
+fig4.show()
+# %%
+fig3.show()
+# %%
+fig7 = go.Figure(**tools.merge_figures([
+    fig3,
+    fig4
+]))
+# %%
+fig7.update_layout(template='plotly_dark')
+fig7.show()
+# %%
+fig10 = df.figure(columns=['VWAP'],kind='line')
+fig10.update_yaxes(side='right')
+fig10.show()
+# %%
+fig = go.Figure(**tools.merge_figures([
+    qf.figure(),
+    df.figure(columns=['VWAP'],kind='line').update_yaxes(side='right')
+    
+    ]))
+    
+# %%
+fig.show()
 # %%
