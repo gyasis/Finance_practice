@@ -105,3 +105,13 @@ fig = go.Figure(**tools.merge_figures([
 # %%
 fig.show()
 # %%
+import quandl
+Q_Key = "FWrb1uTFmcdbGo_T1bzW"
+quandl.ApiConfig.api_key = Q_Key
+
+df = quandl.get(dataset='NASDAQ/GPRO', start_date="2000-01-01", end_date="2020-04-01")
+
+# df = df.rename(columns = {'Value':'price','Adj. Open':'Open', 'Adj. High':'High', 'Adj. Low':'Low', 'Adj. Close':'Close', 'Adj. Volume':'Volume'}, inplace=True)
+
+df
+# %%
